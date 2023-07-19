@@ -1,37 +1,34 @@
-from dbConnect import conn
-import bcrypt
-
-cursor = conn.cursor()
+from helpers.helper import *
+from User import User
+from dbConnect import conn, cursor
 
 
 def seed_data():
     return [
-        ("user1", "password1"),
-        ("user2", "password2"),
-        ("user3", "password3")
+        {"username": "user1", "password": "password1"},
+        {"username": "user2", "password": "password2"},
+        {"username": "user3", "password": "password3"},
+        {"username": "user4", "password": "password4"},
+        {"username": "user5", "password": "password5"},
+        {"username": "user6", "password": "password6"}
     ]
-
-
-def encrypt_password(password: str):
-    hashed_pass = bcrypt.hashpw(password.encode("utf-8"), bcrypt.gensalt())
-    return hashed_pass.decode("utf-8")
 
 
 def seed_db():
     data = seed_data()
-    for username, password in data:
-        password_encrypted = encrypt_password(password)
-        query = "INSERT INTO users(username, password) VALUES (%s, %s)"
-        values = (username, password_encrypted)
-        cursor.execute(query, values)
-    conn.commit()
+    for row in data:
+        user = User()
+        user.create({
+            "username": row.get('username'),
+            "password": password_encrypt(row.get('password'))
+        })
     print("Data seeded")
+    cursor.close()
+    conn.close()
 
 
 def main():
     seed_db()
-    cursor.close()
-    conn.close()
 
 
 if __name__ == "__main__":
