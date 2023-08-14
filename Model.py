@@ -13,10 +13,10 @@ class Model:
             values = tuple(data.values())
 
             try:
-                print(str(cursor.execute(query, values)))
+                cursor.execute(query, values)
                 conn.commit()
             except Exception as e:
                 conn.rollback()
                 raise e
             finally:
-                print("nothing")
+                pass

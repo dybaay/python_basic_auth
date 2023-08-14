@@ -22,6 +22,7 @@ def seed_db():
             "username": row.get('username'),
             "password": password_encrypt(row.get('password'))
         })
+        print(f"{password_encrypt(row.get('password'))}")
     print("Data seeded")
     cursor.close()
     conn.close()
